@@ -1,5 +1,59 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { auth, db } from '../firebase';
+import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { MetalPrices, User } from '../types';
+
+export enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+export interface FirestoreErrorInfo {
+  error: string;
+  operationType: OperationType;
+  path: string | null;
+  authInfo: {
+    userId: string | undefined;
+    email: string | null | undefined;
+    emailVerified: boolean | undefined;
+    isAnonymous: boolean | undefined;
+    tenantId: string | null | undefined;
+    providerInfo: {
+      providerId: string;
+      displayName: string | null;
+      email: string | null;
+      photoUrl: string | null;
+    }[];
+  }
+}
+
+export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errInfo: FirestoreErrorInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
+      emailVerified: auth.currentUser?.emailVerified,
+      isAnonymous: auth.currentUser?.isAnonymous,
+      tenantId: auth.currentUser?.tenantId,
+      providerInfo: auth.currentUser?.providerData.map(provider => ({
+        providerId: provider.providerId,
+        displayName: provider.displayName,
+        email: provider.email,
+        photoUrl: provider.photoURL
+      })) || []
+    },
+    operationType,
+    path
+  }
+  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  throw new Error(JSON.stringify(errInfo));
+}
 
 interface AppContextType {
   prices: MetalPrices | null;
@@ -10,8 +64,9 @@ interface AppContextType {
   user: User | null;
   loading: boolean;
   refreshPrices: () => Promise<void>;
-  login: (email: string, name: string) => void;
-  logout: () => void;
+  login: () => Promise<void>;
+  logout: () => Promise<void>;
+  isAuthReady: boolean;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -20,14 +75,44 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [prices, setPrices] = useState<MetalPrices | null>(null);
   const [manualPrices, setManualPrices] = useState<MetalPrices | null>(null);
   const [useManualPrices, setUseManualPrices] = useState(false);
-  const [user, setUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('aura_user');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAuthReady, setIsAuthReady] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+          if (userDoc.exists()) {
+            setUser(userDoc.data() as User);
+          } else {
+            const newUser: User = {
+              id: firebaseUser.uid,
+              email: firebaseUser.email || '',
+              name: firebaseUser.displayName || 'Jeweler',
+              role: 'user'
+            };
+            await setDoc(doc(db, 'users', firebaseUser.uid), {
+              ...newUser,
+              createdAt: serverTimestamp()
+            });
+            setUser(newUser);
+          }
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+        }
+      } else {
+        setUser(null);
+      }
+      setIsAuthReady(true);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const fetchPrices = async () => {
-    setLoading(true);
     try {
       const response = await fetch('/api/prices');
       if (!response.ok) throw new Error('Failed to fetch prices');
@@ -36,8 +121,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (!manualPrices) setManualPrices(data);
     } catch (err) {
       console.error('Error fetching prices:', err);
-    } finally {
-      setLoading(false);
+      const fallback = {
+        gold: 2050.45,
+        silver: 23.15,
+        platinum: 920.80,
+        palladium: 1050.20,
+        rhodium: 14500,
+        chartData: [
+          { date: 'Jan 1', price: 2000 },
+          { date: 'Jan 15', price: 2050 },
+          { date: 'Feb 1', price: 2050.45 }
+        ],
+        updatedAt: new Date().toISOString()
+      };
+      setPrices(fallback);
+      if (!manualPrices) setManualPrices(fallback);
     }
   };
 
@@ -47,15 +145,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval);
   }, []);
 
-  const login = (email: string, name: string) => {
-    const newUser = { id: Math.random().toString(36).substr(2, 9), email, name };
-    setUser(newUser);
-    localStorage.setItem('aura_user', JSON.stringify(newUser));
+  const login = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('aura_user');
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   return (
@@ -69,7 +173,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       loading, 
       refreshPrices: fetchPrices, 
       login, 
-      logout 
+      logout,
+      isAuthReady
     }}>
       {children}
     </AppContext.Provider>

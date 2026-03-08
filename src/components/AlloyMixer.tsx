@@ -62,8 +62,8 @@ export default function AlloyMixer() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">Alloy Mixing Studio</h2>
-        <p className="text-slate-500 dark:text-slate-400">Precise measurements for creating custom jewelry alloys</p>
+        <h2 className="text-3xl font-black text-slate-900 dark:text-white bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">Alloy Mixing Studio</h2>
+        <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium">Precise measurements for creating custom jewelry alloys</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -136,7 +136,7 @@ export default function AlloyMixer() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 space-y-6">
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 space-y-6 shadow-sm">
             <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <FlaskConical className="w-5 h-5 text-indigo-500" />
               Color Tuner (Visualizer)
@@ -178,7 +178,7 @@ export default function AlloyMixer() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 space-y-4">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 space-y-4 shadow-sm">
             <h4 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Info className="w-4 h-4 text-indigo-500" />
               Pro Tip
@@ -188,7 +188,7 @@ export default function AlloyMixer() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-indigo-600 to-violet-600 p-8 rounded-3xl text-white space-y-8 shadow-xl shadow-indigo-100 dark:shadow-none">
+          <div className="bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-700 p-8 rounded-3xl text-white space-y-8 shadow-xl shadow-indigo-500/20 dark:shadow-none">
             <h3 className="text-indigo-200 font-bold uppercase text-xs tracking-widest">Mixing Instructions</h3>
             
             <div className="space-y-6">

@@ -13,7 +13,8 @@ import {
   X,
   Sun,
   Moon,
-  Store
+  Store,
+  ArrowRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
@@ -38,15 +39,17 @@ type Tab = 'dashboard' | 'purity' | 'weight' | 'scrap' | 'retail' | 'alloy' | 'r
 const OvalLogo = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={className}>
     <ellipse cx="12" cy="12" rx="9" ry="6" />
-    <path d="M12 6v12M3 12h18" opacity="0.5" />
-    <path d="M5.5 8.5l13 7M5.5 15.5l13-7" opacity="0.3" />
+    <ellipse cx="12" cy="12" rx="7" ry="4.5" opacity="0.8" />
+    <path d="M12 3v3M12 18v3M3 12h3M18 12h3" opacity="0.5" />
+    <path d="M5.5 8.5l2 1M16.5 14.5l2 1M5.5 15.5l2-1M16.5 9.5l2-1" opacity="0.3" />
   </svg>
 );
 
 export default function App() {
-  const { user, loading, logout } = useApp();
+  const { user, loading, isAuthReady, logout } = useApp();
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [showAuth, setShowAuth] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('theme') === 'dark' || 
@@ -65,16 +68,27 @@ export default function App() {
     }
   }, [isDarkMode]);
 
-  if (loading) {
+  if (!isAuthReady) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
         <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
-  if (!user) {
-    return <Auth />;
+  if (showAuth && !user) {
+    return (
+      <div className="relative">
+        <button 
+          onClick={() => setShowAuth(false)}
+          className="absolute top-8 left-8 z-50 flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-bold transition-colors"
+        >
+          <ArrowRight className="w-4 h-4 rotate-180" />
+          Back to App
+        </button>
+        <Auth />
+      </div>
+    );
   }
 
   const navItems = [
@@ -121,11 +135,11 @@ export default function App() {
       >
         <div className="h-full flex flex-col">
           <div className="p-6 flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/20">
+            <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/20">
               <OvalLogo className="w-5 h-5 text-white" />
             </div>
             {isSidebarOpen && (
-              <span className="font-bold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">KaratBase</span>
+              <span className="font-bold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 via-slate-600 to-slate-800 dark:from-white dark:via-slate-200 dark:to-white">KaratBase</span>
             )}
           </div>
 
@@ -197,18 +211,29 @@ export default function App() {
               {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
             <div className="h-8 w-px bg-slate-200 dark:bg-slate-800" />
-            <div className="text-right">
-              <div className={cn("text-xs font-bold", isDarkMode ? "text-white" : "text-slate-900")}>{user.name}</div>
+            {user ? (
+              <div className="flex items-center gap-4">
+                <div className="text-right">
+                  <div className={cn("text-xs font-bold", isDarkMode ? "text-white" : "text-slate-900")}>{user.name}</div>
+                  <button 
+                    onClick={logout}
+                    className="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold hover:text-indigo-700 transition-colors uppercase tracking-widest"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+              </div>
+            ) : (
               <button 
-                onClick={logout}
-                className="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold hover:text-indigo-700 transition-colors uppercase tracking-widest"
+                onClick={() => setShowAuth(true)}
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg transition-colors shadow-lg shadow-indigo-500/20"
               >
-                Sign Out
+                Sign In
               </button>
-            </div>
-            <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
-              {user.name.charAt(0).toUpperCase()}
-            </div>
+            )}
           </div>
         </header>
 

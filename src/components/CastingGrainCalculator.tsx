@@ -40,37 +40,37 @@ export default function CastingGrainCalculator() {
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Casting Grain Calculator</h2>
-          <p className="text-slate-500 mt-2 font-medium">Calculate exact metal needed for casting trees and buttons.</p>
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white bg-gradient-to-r from-amber-600 via-orange-600 to-yellow-600 bg-clip-text text-transparent">Casting Grain Calculator</h2>
+          <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium">Calculate exact metal needed for casting trees and buttons.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-8">
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 space-y-8">
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-8">
             <div className="space-y-6">
               <div className="space-y-4">
-                <label className="block text-sm font-semibold text-slate-700">Wax Weight (g)</label>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Wax Weight (g)</label>
                 <div className="relative">
-                  <Scale className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Scale className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
                   <input 
                     type="number"
                     step="0.01"
                     value={waxWeight || ''}
                     onChange={(e) => setWaxWeight(Number(e.target.value))}
                     placeholder="0.00"
-                    className="w-full p-3 pl-10 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full p-3 pl-10 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none text-slate-900 dark:text-white"
                   />
                 </div>
-                <p className="text-[10px] text-slate-400 italic">Weight of your wax tree/model including sprue.</p>
+                <p className="text-[10px] text-slate-400 dark:text-slate-500 italic">Weight of your wax tree/model including sprue.</p>
               </div>
 
               <div className="space-y-4">
-                <label className="block text-sm font-semibold text-slate-700">Target Metal</label>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Target Metal</label>
                 <select 
                   value={selectedMetal.name}
                   onChange={(e) => setSelectedMetal(METALS.find(m => m.name === e.target.value) || METALS[0])}
-                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none text-slate-900 dark:text-white"
                 >
                   {METALS.map(m => (
                     <option key={m.name} value={m.name}>{m.name} ({m.density} g/cm³)</option>
@@ -80,47 +80,47 @@ export default function CastingGrainCalculator() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-4">
-                  <label className="block text-sm font-semibold text-slate-700">Button Weight (g)</label>
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Button Weight (g)</label>
                   <input 
                     type="number"
                     value={buttonWeight}
                     onChange={(e) => setButtonWeight(Number(e.target.value))}
-                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none text-slate-900 dark:text-white"
                   />
                 </div>
                 <div className="space-y-4">
-                  <label className="block text-sm font-semibold text-slate-700">Safety Factor (%)</label>
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Safety Factor (%)</label>
                   <input 
                     type="number"
                     value={safetyFactor}
                     onChange={(e) => setSafetyFactor(Number(e.target.value))}
-                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none text-slate-900 dark:text-white"
                   />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-3xl border border-slate-100 space-y-4">
-            <h4 className="font-bold text-slate-900 flex items-center gap-2">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 space-y-4">
+            <h4 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Info className="w-4 h-4 text-amber-500" />
               Pro Tip: The Button
             </h4>
-            <p className="text-sm text-slate-500 leading-relaxed">
+            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
               The button is the reservoir of molten metal at the top of the sprue. It provides pressure and feeds the casting as it shrinks during cooling. Never skimp on the button!
             </p>
           </div>
         </div>
 
         <div className="space-y-6">
-          <div className="bg-amber-600 p-8 rounded-3xl text-white space-y-8 shadow-xl shadow-amber-100">
-            <h3 className="text-amber-200 font-bold uppercase text-xs tracking-widest">Casting Requirements</h3>
+          <div className="bg-gradient-to-br from-amber-600 via-orange-600 to-yellow-600 p-8 rounded-3xl text-white space-y-8 shadow-xl shadow-amber-500/20 dark:shadow-none">
+            <h3 className="text-amber-100 font-bold uppercase text-xs tracking-widest">Casting Requirements</h3>
             
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-xl font-bold">1</div>
                 <div className="flex-1">
-                  <div className="text-xs text-amber-200 uppercase font-bold">Metal for Model</div>
+                  <div className="text-xs text-amber-100 uppercase font-bold">Metal for Model</div>
                   <div className="text-2xl font-black">{results.metalWeight.toFixed(2)}g</div>
                 </div>
               </div>
@@ -128,7 +128,7 @@ export default function CastingGrainCalculator() {
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-xl font-bold">2</div>
                 <div className="flex-1">
-                  <div className="text-xs text-amber-200 uppercase font-bold">Button & Safety</div>
+                  <div className="text-xs text-amber-100 uppercase font-bold">Button & Safety</div>
                   <div className="text-2xl font-black">{(results.safetyAmount + buttonWeight).toFixed(2)}g</div>
                 </div>
               </div>
@@ -136,7 +136,7 @@ export default function CastingGrainCalculator() {
               <div className="pt-6 border-t border-white/10">
                 <div className="flex justify-between items-end">
                   <div>
-                    <div className="text-xs text-amber-200 uppercase font-bold">Total Grain Needed</div>
+                    <div className="text-xs text-amber-100 uppercase font-bold">Total Grain Needed</div>
                     <div className="text-5xl font-black">{results.totalNeeded.toFixed(2)}g</div>
                   </div>
                   <Layers className="w-12 h-12 opacity-20" />
@@ -145,7 +145,7 @@ export default function CastingGrainCalculator() {
             </div>
           </div>
 
-          <div className="bg-slate-900 p-8 rounded-3xl text-white space-y-4">
+          <div className="bg-slate-900 dark:bg-slate-800 p-8 rounded-3xl text-white space-y-4 shadow-xl shadow-slate-900/10">
             <div className="flex items-center gap-2 text-amber-400 font-bold text-sm uppercase tracking-wider">
               <RefreshCw className="w-4 h-4" />
               Quick Conversion

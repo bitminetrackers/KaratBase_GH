@@ -142,7 +142,7 @@ export default function StoneSettingVisualizer() {
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">
+          <h2 className="text-3xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 dark:from-white dark:via-slate-200 dark:to-white">
             Stone Setting Visualizer
           </h2>
           <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium">Plan spacing and layout for professional jewelry settings.</p>
@@ -273,7 +273,7 @@ export default function StoneSettingVisualizer() {
         </div>
 
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-gradient-to-br from-emerald-600 to-teal-700 p-6 rounded-3xl text-white shadow-xl shadow-emerald-900/10">
+          <div className="bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 p-6 rounded-3xl text-white shadow-xl shadow-emerald-900/10">
             <div className="flex justify-between items-center mb-4">
               <div className="text-xs font-bold uppercase tracking-widest opacity-70">Layout Summary</div>
               <Layout className="w-4 h-4 opacity-70" />

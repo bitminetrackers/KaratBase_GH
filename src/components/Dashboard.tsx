@@ -45,7 +45,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">
+          <h1 className="text-3xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-200 dark:to-white">
             Market Intelligence
           </h1>
           <p className="text-slate-500 dark:text-slate-400 mt-1 font-medium">Real-time precious metal spot prices and analytics</p>

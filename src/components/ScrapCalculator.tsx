@@ -69,29 +69,29 @@ export default function ScrapCalculator() {
   return (
     <div className="max-w-5xl mx-auto space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-slate-900">Scrap & Estate Calculator</h2>
-        <p className="text-slate-500">Value complex pieces with mixed metals and stones</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white bg-gradient-to-r from-rose-600 to-orange-600 bg-clip-text text-transparent">Scrap & Estate Calculator</h2>
+        <p className="text-slate-500 dark:text-slate-400">Value complex pieces with mixed metals and stones</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 space-y-6">
-            <h3 className="font-bold text-slate-900 flex items-center gap-2">
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-6">
+            <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Scale className="w-5 h-5 text-rose-500" />
               Metal Details
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-4">
-                <label className="block text-sm font-semibold text-slate-700">Total Piece Weight (g)</label>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Total Piece Weight (g)</label>
                 <input 
                   type="number"
                   value={totalWeight || ''}
                   onChange={(e) => setTotalWeight(Number(e.target.value))}
-                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none transition-all"
+                  className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none transition-all text-slate-900 dark:text-white"
                 />
               </div>
               <div className="space-y-4">
-                <label className="block text-sm font-semibold text-slate-700">Metal Type</label>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Metal Type</label>
                 <select 
                   onChange={(e) => {
                     const val = e.target.value;
@@ -103,7 +103,7 @@ export default function ScrapCalculator() {
                     else if (val.includes('Platinum')) setMetalPurity(0.950);
                     else if (val.includes('Silver')) setMetalPurity(0.925);
                   }}
-                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none transition-all"
+                  className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none transition-all text-slate-900 dark:text-white"
                 >
                   <option>14K Gold (58.5%)</option>
                   <option>18K Gold (75.0%)</option>
@@ -116,15 +116,15 @@ export default function ScrapCalculator() {
             </div>
           </div>
 
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 space-y-6">
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-6">
             <div className="flex justify-between items-center">
-              <h3 className="font-bold text-slate-900 flex items-center gap-2">
+              <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <Gem className="w-5 h-5 text-blue-500" />
                 Stone Breakdown
               </h3>
               <button 
                 onClick={addStone}
-                className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-sm font-bold hover:bg-blue-100 transition-colors"
+                className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg text-sm font-bold hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
               >
                 <Plus className="w-4 h-4" /> Add Stone
               </button>
@@ -138,31 +138,31 @@ export default function ScrapCalculator() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
-                    className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100"
+                    className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800"
                   >
                     <div className="flex-1 grid grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-slate-400 uppercase">Weight (ct)</label>
+                        <label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Weight (ct)</label>
                         <input 
                           type="number"
                           value={stone.weight || ''}
                           onChange={(e) => updateStone(stone.id, 'weight', Number(e.target.value))}
-                          className="w-full bg-transparent border-b border-slate-200 focus:border-blue-500 outline-none text-sm"
+                          className="w-full bg-transparent border-b border-slate-200 dark:border-slate-700 focus:border-blue-500 outline-none text-sm text-slate-900 dark:text-white"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-slate-400 uppercase">Value ($/ct)</label>
+                        <label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Value ($/ct)</label>
                         <input 
                           type="number"
                           value={stone.valuePerCt || ''}
                           onChange={(e) => updateStone(stone.id, 'valuePerCt', Number(e.target.value))}
-                          className="w-full bg-transparent border-b border-slate-200 focus:border-blue-500 outline-none text-sm"
+                          className="w-full bg-transparent border-b border-slate-200 dark:border-slate-700 focus:border-blue-500 outline-none text-sm text-slate-900 dark:text-white"
                         />
                       </div>
                     </div>
                     <button 
                       onClick={() => removeStone(stone.id)}
-                      className="p-2 text-slate-300 hover:text-rose-500 transition-colors"
+                      className="p-2 text-slate-300 dark:text-slate-600 hover:text-rose-500 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -170,7 +170,7 @@ export default function ScrapCalculator() {
                 ))}
               </AnimatePresence>
               {stones.length === 0 && (
-                <div className="text-center py-8 text-slate-400 text-sm border-2 border-dashed border-slate-100 rounded-3xl">
+                <div className="text-center py-8 text-slate-400 dark:text-slate-600 text-sm border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-3xl">
                   No stones added. Click "Add Stone" to include gems in valuation.
                 </div>
               )}
@@ -227,15 +227,15 @@ export default function ScrapCalculator() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-3xl border border-slate-100 space-y-4">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 space-y-4">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <label className="block text-sm font-semibold text-slate-700">Spot Price ($/oz)</label>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Spot Price ($/oz)</label>
                 <button 
                   onClick={() => setUseManualPrices(!useManualPrices)}
                   className={cn(
                     "text-[10px] font-bold px-2 py-1 rounded-md transition-colors",
-                    useManualPrices ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-500"
+                    useManualPrices ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
                   )}
                 >
                   {useManualPrices ? "MANUAL MODE" : "LIVE MODE"}
@@ -249,28 +249,28 @@ export default function ScrapCalculator() {
                 className={cn(
                   "w-full p-3 border rounded-xl outline-none transition-all",
                   useManualPrices 
-                    ? "bg-white border-amber-200 focus:ring-2 focus:ring-amber-500" 
-                    : "bg-slate-50 border-slate-200 cursor-not-allowed text-slate-500"
+                    ? "bg-white dark:bg-slate-800 border-amber-200 dark:border-amber-900/50 focus:ring-2 focus:ring-amber-500 text-slate-900 dark:text-white" 
+                    : "bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 cursor-not-allowed text-slate-500 dark:text-slate-400"
                 )}
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="block text-xs font-bold text-slate-400 uppercase">Discount %</label>
+                <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase">Discount %</label>
                 <input 
                   type="number"
                   value={discount}
                   onChange={(e) => setDiscount(Number(e.target.value))}
-                  className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm"
+                  className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white"
                 />
               </div>
               <div className="space-y-2">
-                <label className="block text-xs font-bold text-slate-400 uppercase">Premium %</label>
+                <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase">Premium %</label>
                 <input 
                   type="number"
                   value={premium}
                   onChange={(e) => setPremium(Number(e.target.value))}
-                  className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm"
+                  className="w-full p-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white"
                 />
               </div>
             </div>

@@ -1,0 +1,62 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account information and roles",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Gemstone": {
+      "title": "Gemstone Listing",
+      "description": "Details of a gemstone available for sale",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "carat": { "type": "number" },
+        "cut": { "type": "string" },
+        "price": { "type": "number" },
+        "image": { "type": "string" },
+        "certified": { "type": "boolean" },
+        "origin": { "type": "string" },
+        "stock": { "type": "integer" }
+      },
+      "required": ["name", "type", "carat", "price", "stock"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A purchase record",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "gemstoneId": { "type": "string" },
+        "amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "paid", "shipped"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "gemstoneId", "amount", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/gemstones/{gemstoneId}": {
+      "schema": "Gemstone",
+      "description": "Gemstone inventory"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer orders"
+    }
+  }
+}
