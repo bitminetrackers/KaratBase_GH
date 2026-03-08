@@ -84,14 +84,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (firebaseUser) {
         try {
           const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+          const isAdminEmail = firebaseUser.email === 'robertwilliams.isaac@gmail.com';
+          
           if (userDoc.exists()) {
-            setUser(userDoc.data() as User);
+            const userData = userDoc.data() as User;
+            if (isAdminEmail && userData.role !== 'admin') {
+              const updatedUser: User = { ...userData, role: 'admin' };
+              await setDoc(doc(db, 'users', firebaseUser.uid), updatedUser, { merge: true });
+              setUser(updatedUser);
+            } else {
+              setUser(userData);
+            }
           } else {
             const newUser: User = {
               id: firebaseUser.uid,
               email: firebaseUser.email || '',
               name: firebaseUser.displayName || 'Jeweler',
-              role: 'user'
+              role: isAdminEmail ? 'admin' : 'user'
             };
             await setDoc(doc(db, 'users', firebaseUser.uid), {
               ...newUser,
@@ -128,9 +137,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         palladium: 1050.20,
         rhodium: 14500,
         chartData: [
-          { date: 'Jan 1', price: 2000 },
-          { date: 'Jan 15', price: 2050 },
-          { date: 'Feb 1', price: 2050.45 }
+          { date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), price: 2000 },
+          { date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), price: 2030 },
+          { date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), price: 2050.45 }
         ],
         updatedAt: new Date().toISOString()
       };
