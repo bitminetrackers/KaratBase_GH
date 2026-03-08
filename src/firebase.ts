@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, browserPopupRedirectResolver } from 'firebase/auth';
 import { initializeFirestore, doc, getDocFromServer } from 'firebase/firestore';
 import firebaseConfigData from '../firebase-applet-config.json';
 
@@ -23,6 +23,7 @@ export const db = initializeFirestore(app, {
 }, (firebaseConfigData as any).firestoreDatabaseId);
 
 export const auth = getAuth(app);
+export { browserPopupRedirectResolver };
 
 // Connection test
 async function testConnection() {

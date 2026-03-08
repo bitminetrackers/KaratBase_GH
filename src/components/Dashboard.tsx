@@ -154,6 +154,12 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
       <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-900/50 p-3 rounded-lg w-fit">
         <Clock className="w-3 h-3" />
         <span>Last updated: {prices ? new Date(prices.updatedAt).toLocaleTimeString() : 'Never'}</span>
+        {prices?.cachedAt && (
+          <>
+            <span className="mx-2">•</span>
+            <span className="text-amber-500 font-bold">Cached from Firestore</span>
+          </>
+        )}
         <span className="mx-2">•</span>
         <span>Data provided by Yahoo Finance</span>
       </div>

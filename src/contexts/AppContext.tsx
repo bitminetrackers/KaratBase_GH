@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { auth, db } from '../firebase';
+import { auth, db, browserPopupRedirectResolver } from '../firebase';
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { MetalPrices, User } from '../types';
@@ -123,13 +123,42 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const fetchPrices = async () => {
     try {
+      // 1. Try to fetch from our local Express API (works in AI Studio)
       const response = await fetch('/api/prices');
-      if (!response.ok) throw new Error('Failed to fetch prices');
+      if (!response.ok) throw new Error('API fetch failed');
       const data = await response.json();
+      
       setPrices(data);
       if (!manualPrices) setManualPrices(data);
+
+      // 2. Cache the successful fetch to Firestore so it's available on Vercel
+      if (user?.role === 'admin') {
+        try {
+          await setDoc(doc(db, 'market_data', 'latest'), {
+            ...data,
+            cachedAt: serverTimestamp()
+          });
+        } catch (e) {
+          console.error('Failed to cache prices to Firestore:', e);
+        }
+      }
     } catch (err) {
-      console.error('Error fetching prices:', err);
+      console.warn('API fetch failed, trying Firestore cache...', err);
+      
+      try {
+        // 3. Fallback: Try to load from Firestore cache (works on Vercel)
+        const cacheDoc = await getDoc(doc(db, 'market_data', 'latest'));
+        if (cacheDoc.exists()) {
+          const cachedData = cacheDoc.data() as MetalPrices;
+          setPrices(cachedData);
+          if (!manualPrices) setManualPrices(cachedData);
+          return;
+        }
+      } catch (cacheErr) {
+        console.error('Firestore cache fetch failed:', cacheErr);
+      }
+
+      // 4. Final Fallback: Hardcoded values
       const fallback = {
         gold: 2050.45,
         silver: 23.15,
@@ -137,8 +166,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         palladium: 1050.20,
         rhodium: 14500,
         chartData: [
-          { date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), price: 2000 },
-          { date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), price: 2030 },
+          { date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), price: 2000 },
+          { date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), price: 2030 },
           { date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), price: 2050.45 }
         ],
         updatedAt: new Date().toISOString()
@@ -152,12 +181,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     fetchPrices();
     const interval = setInterval(fetchPrices, 15 * 60 * 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [user?.role]); // Re-fetch when user role changes to potentially update cache
 
   const login = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      // Use the resolver to handle popups correctly in iframes
+      await signInWithPopup(auth, provider, browserPopupRedirectResolver);
     } catch (error) {
       console.error('Login error:', error);
     }

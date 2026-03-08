@@ -6,6 +6,7 @@ export interface MetalPrices {
   rhodium: number;
   chartData?: { date: string, price: number }[];
   updatedAt: string;
+  cachedAt?: any;
 }
 
 export interface StoneType {
