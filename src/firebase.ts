@@ -20,7 +20,8 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firestore with long polling enabled to work reliably in iframes
 export const db = initializeFirestore(app, {
   experimentalForceLongPolling: true,
-}, (firebaseConfigData as any).firestoreDatabaseId);
+  useFetchStreams: false,
+});
 
 export const auth = getAuth(app);
 export { browserPopupRedirectResolver };

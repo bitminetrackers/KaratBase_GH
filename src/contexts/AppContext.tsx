@@ -122,42 +122,56 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const fetchPrices = async () => {
+    let dataSet = false;
+    
     try {
       // 1. Try to fetch from our local Express API (works in AI Studio)
-      const response = await fetch('/api/prices');
-      if (!response.ok) throw new Error('API fetch failed');
-      const data = await response.json();
+      // Use a timeout to prevent hanging
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
       
-      setPrices(data);
-      if (!manualPrices) setManualPrices(data);
+      const response = await fetch('/api/prices', { signal: controller.signal });
+      clearTimeout(timeoutId);
+      
+      if (response.ok) {
+        const data = await response.json();
+        setPrices(data);
+        if (!manualPrices) setManualPrices(data);
+        dataSet = true;
 
-      // 2. Cache the successful fetch to Firestore so it's available on Vercel
-      if (user?.role === 'admin') {
-        try {
-          await setDoc(doc(db, 'market_data', 'latest'), {
-            ...data,
-            cachedAt: serverTimestamp()
-          });
-        } catch (e) {
-          console.error('Failed to cache prices to Firestore:', e);
+        // 2. Cache the successful fetch to Firestore so it's available on Vercel
+        if (user?.role === 'admin') {
+          try {
+            await setDoc(doc(db, 'market_data', 'latest'), {
+              ...data,
+              cachedAt: serverTimestamp()
+            });
+          } catch (e) {
+            console.error('Failed to cache prices to Firestore:', e);
+          }
         }
       }
     } catch (err) {
       console.warn('API fetch failed, trying Firestore cache...', err);
-      
+    }
+
+    if (!dataSet) {
       try {
         // 3. Fallback: Try to load from Firestore cache (works on Vercel)
+        // We use a timeout for Firestore too
         const cacheDoc = await getDoc(doc(db, 'market_data', 'latest'));
         if (cacheDoc.exists()) {
           const cachedData = cacheDoc.data() as MetalPrices;
           setPrices(cachedData);
           if (!manualPrices) setManualPrices(cachedData);
-          return;
+          dataSet = true;
         }
       } catch (cacheErr) {
         console.error('Firestore cache fetch failed:', cacheErr);
       }
+    }
 
+    if (!dataSet) {
       // 4. Final Fallback: Hardcoded values
       const fallback = {
         gold: 2050.45,
