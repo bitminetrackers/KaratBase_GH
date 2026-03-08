@@ -32,18 +32,18 @@ export default function PurityCalculator() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-slate-900">Purity & Valuation Calculator</h2>
-        <p className="text-slate-500">Calculate fine gold content and business margins</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Purity & Valuation Calculator</h2>
+        <p className="text-slate-500 dark:text-slate-400">Calculate fine gold content and business margins</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 space-y-6">
+        <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-6">
           <div className="space-y-4">
-            <label className="block text-sm font-semibold text-slate-700">Gold Purity (Karat)</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Gold Purity (Karat)</label>
             <select 
               value={purity}
               onChange={(e) => setPurity(Number(e.target.value))}
-              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none transition-all"
+              className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none transition-all text-slate-900 dark:text-white"
             >
               {GOLD_PURITIES.map((p) => (
                 <option key={p.label} value={p.value}>{p.label}</option>
@@ -52,38 +52,38 @@ export default function PurityCalculator() {
           </div>
 
           <div className="space-y-4">
-            <label className="block text-sm font-semibold text-slate-700">Total Weight (grams)</label>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Total Weight (grams)</label>
             <input 
               type="number"
               value={weight || ''}
               onChange={(e) => setWeight(Number(e.target.value))}
               placeholder="0.00"
-              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none transition-all"
+              className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none transition-all text-slate-900 dark:text-white"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-4">
-              <label className="block text-sm font-semibold text-slate-700">Buy Discount (%)</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Buy Discount (%)</label>
               <div className="relative">
-                <Percent className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Percent className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
                 <input 
                   type="number"
                   value={discount}
                   onChange={(e) => setDiscount(Number(e.target.value))}
-                  className="w-full p-3 pl-10 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none transition-all"
+                  className="w-full p-3 pl-10 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none transition-all text-slate-900 dark:text-white"
                 />
               </div>
             </div>
             <div className="space-y-4">
-              <label className="block text-sm font-semibold text-slate-700">Sell Premium (%)</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Sell Premium (%)</label>
               <div className="relative">
-                <Percent className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Percent className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
                 <input 
                   type="number"
                   value={premium}
                   onChange={(e) => setPremium(Number(e.target.value))}
-                  className="w-full p-3 pl-10 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none transition-all"
+                  className="w-full p-3 pl-10 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none transition-all text-slate-900 dark:text-white"
                 />
               </div>
             </div>
@@ -91,19 +91,19 @@ export default function PurityCalculator() {
 
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <label className="block text-sm font-semibold text-slate-700">Current Spot Price ($/oz)</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Current Spot Price ($/oz)</label>
               <button 
                 onClick={() => setUseManualPrices(!useManualPrices)}
                 className={cn(
                   "text-[10px] font-bold px-2 py-1 rounded-md transition-colors",
-                  useManualPrices ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-500"
+                  useManualPrices ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
                 )}
               >
                 {useManualPrices ? "MANUAL MODE" : "LIVE MODE"}
               </button>
             </div>
             <div className="relative">
-              <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
               <input 
                 type="number"
                 value={spotPrice}
@@ -112,8 +112,8 @@ export default function PurityCalculator() {
                 className={cn(
                   "w-full p-3 pl-10 border rounded-xl outline-none transition-all",
                   useManualPrices 
-                    ? "bg-white border-amber-200 focus:ring-2 focus:ring-amber-500" 
-                    : "bg-slate-50 border-slate-200 cursor-not-allowed text-slate-500"
+                    ? "bg-white dark:bg-slate-800 border-amber-200 dark:border-amber-900/50 focus:ring-2 focus:ring-amber-500 text-slate-900 dark:text-white" 
+                    : "bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 cursor-not-allowed text-slate-500 dark:text-slate-400"
                 )}
               />
             </div>
@@ -123,20 +123,20 @@ export default function PurityCalculator() {
         <div className="space-y-6">
           <motion.div 
             layout
-            className="bg-amber-50 p-6 rounded-3xl border border-amber-100"
+            className="bg-amber-50 dark:bg-amber-900/20 p-6 rounded-3xl border border-amber-100 dark:border-amber-900/30"
           >
-            <h3 className="text-amber-900 font-bold mb-4 flex items-center gap-2">
+            <h3 className="text-amber-900 dark:text-amber-400 font-bold mb-4 flex items-center gap-2">
               <Calculator className="w-5 h-5" />
               Composition Results
             </h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-amber-700">Fine Gold Weight:</span>
-                <span className="text-xl font-bold text-amber-900">{pureWeight.toFixed(3)}g</span>
+                <span className="text-amber-700 dark:text-amber-500/80">Fine Gold Weight:</span>
+                <span className="text-xl font-bold text-amber-900 dark:text-amber-400">{pureWeight.toFixed(3)}g</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-amber-700">Alloy Weight:</span>
-                <span className="text-xl font-bold text-amber-900">{alloyWeight.toFixed(3)}g</span>
+                <span className="text-amber-700 dark:text-amber-500/80">Alloy Weight:</span>
+                <span className="text-xl font-bold text-amber-900 dark:text-amber-400">{alloyWeight.toFixed(3)}g</span>
               </div>
             </div>
           </motion.div>

@@ -102,7 +102,7 @@ service cloud.firestore {
     }
 
     match /gemstones/{gemstoneId} {
-      allow read: if isAuthenticated();
+      allow read: if true;
       allow write: if isAdmin() && isValidGemstone(request.resource.data);
     }
 

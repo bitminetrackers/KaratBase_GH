@@ -17,18 +17,18 @@ export default function WeightEstimator() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-slate-900">Stone Weight Estimator</h2>
-        <p className="text-slate-500">Professional estimation based on dimensions and density</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Stone Weight Estimator</h2>
+        <p className="text-slate-500 dark:text-slate-400">Professional estimation based on dimensions and density</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 space-y-6">
+        <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-4">
-              <label className="block text-sm font-semibold text-slate-700">Stone Type</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Stone Type</label>
               <select 
                 onChange={(e) => setStoneType(STONE_TYPES.find(s => s.name === e.target.value) || STONE_TYPES[0])}
-                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-slate-900 dark:text-white"
               >
                 {STONE_TYPES.map((s) => (
                   <option key={s.name} value={s.name}>{s.name}</option>
@@ -36,10 +36,10 @@ export default function WeightEstimator() {
               </select>
             </div>
             <div className="space-y-4">
-              <label className="block text-sm font-semibold text-slate-700">Shape</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Shape</label>
               <select 
                 onChange={(e) => setShape(STONE_SHAPES.find(s => s.name === e.target.value) || STONE_SHAPES[0])}
-                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-slate-900 dark:text-white"
               >
                 {STONE_SHAPES.map((s) => (
                   <option key={s.name} value={s.name}>{s.name}</option>
@@ -50,41 +50,41 @@ export default function WeightEstimator() {
 
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-4">
-              <label className="block text-sm font-semibold text-slate-700">Length (mm)</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Length (mm)</label>
               <input 
                 type="number"
                 value={length || ''}
                 onChange={(e) => setLength(Number(e.target.value))}
                 placeholder="0.0"
-                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-slate-900 dark:text-white"
               />
             </div>
             <div className="space-y-4">
-              <label className="block text-sm font-semibold text-slate-700">Width (mm)</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Width (mm)</label>
               <input 
                 type="number"
                 value={width || ''}
                 onChange={(e) => setWidth(Number(e.target.value))}
                 placeholder="0.0"
-                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-slate-900 dark:text-white"
               />
             </div>
             <div className="space-y-4">
-              <label className="block text-sm font-semibold text-slate-700">Depth (mm)</label>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Depth (mm)</label>
               <input 
                 type="number"
                 value={depth || ''}
                 onChange={(e) => setDepth(Number(e.target.value))}
                 placeholder="0.0"
-                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-slate-900 dark:text-white"
               />
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <label className="block text-sm font-semibold text-slate-700">Girdle Correction (%)</label>
-              <span className="text-xs text-slate-400">Extra thickness adjustment</span>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Girdle Correction (%)</label>
+              <span className="text-xs text-slate-400 dark:text-slate-500">Extra thickness adjustment</span>
             </div>
             <input 
               type="range"
@@ -93,9 +93,9 @@ export default function WeightEstimator() {
               step="0.5"
               value={girdle}
               onChange={(e) => setGirdle(Number(e.target.value))}
-              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+              className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
             />
-            <div className="flex justify-between text-xs text-slate-400">
+            <div className="flex justify-between text-xs text-slate-400 dark:text-slate-500">
               <span>Thin (0%)</span>
               <span>{girdle}%</span>
               <span>Thick (10%)</span>
@@ -106,7 +106,7 @@ export default function WeightEstimator() {
         <div className="space-y-6">
           <motion.div 
             layout
-            className="bg-blue-600 p-10 rounded-3xl text-white flex flex-col items-center justify-center text-center shadow-xl shadow-blue-100"
+            className="bg-blue-600 p-10 rounded-3xl text-white flex flex-col items-center justify-center text-center shadow-xl shadow-blue-100 dark:shadow-none"
           >
             <Scale className="w-12 h-12 mb-6 opacity-80" />
             <span className="text-blue-200 uppercase text-xs font-bold tracking-widest mb-2">Estimated Carat Weight</span>
@@ -119,12 +119,12 @@ export default function WeightEstimator() {
             </p>
           </motion.div>
 
-          <div className="bg-white p-6 rounded-3xl border border-slate-100 space-y-4">
-            <h3 className="font-bold text-slate-900 flex items-center gap-2">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 space-y-4">
+            <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Info className="w-4 h-4 text-blue-500" />
               Formula Details
             </h3>
-            <div className="text-sm text-slate-500 space-y-2">
+            <div className="text-sm text-slate-500 dark:text-slate-400 space-y-2">
               <p>Weight = L × W × D × Multiplier × Density</p>
               <ul className="list-disc list-inside space-y-1 ml-2">
                 <li>Shape Multiplier: {shape.multiplier}</li>
